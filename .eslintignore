@@ -1,0 +1,5 @@
+.husky/
+.nuxt/
+.vscode/
+.yarn/
+node_modules/

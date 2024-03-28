@@ -1,0 +1,8 @@
+{
+    "parserOptions": { "project": "./tsconfig.json" },
+    "rules": {
+      "no-undef": "off",
+      "@typescript-eslint/key-spacing": "off",
+      "comma-dangle":"off"
+    }
+  }
