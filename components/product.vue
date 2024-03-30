@@ -1,15 +1,17 @@
 <template>
   <div class="item">
-    <div class="item__image">
-      <img :src="image" :alt="item.title" width="200"  />
-    </div>
-    <div class="item__title">
-      <span>{{ item.title }}</span>
-      <Rating v-model:rate="item.rating"/>
-    </div>
-    <div class="item__price">
-      <span>${{ item.price }}</span>
-    </div>
+    <NuxtLink :to="`/product/${item.id}`" >
+      <div class="item__image">
+        <img :src="image" :alt="item.title" width="200"  />
+      </div>
+      <div class="item__title">
+        <span>{{ item.title }}</span>
+        <Rating v-model:rate="item.rating"/>
+      </div>
+      <div class="item__price">
+        <span>${{ item.price }}</span>
+      </div>
+    </NuxtLink>
   </div>
 </template>
 
@@ -22,7 +24,7 @@ const props = defineProps({
 })
 
 
-const image = computed(() => props.item.images[0])
+const image = computed(() => props.item.thumbnail)
 </script>
 
 <style lang="postcss" scoped>
@@ -50,10 +52,18 @@ const image = computed(() => props.item.images[0])
     font-weight: bold;
     display: flex;
     justify-content: space-between;
+    color: #000;
+    text-decoration: none;
   }
   .item__price {
     font-size: large;
     font-weight: bold;
+    color: #000;
+    text-decoration: none;
+  }
+
+  a {
+    text-decoration: none;
   }
 }
 </style>

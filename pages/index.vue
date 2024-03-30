@@ -1,7 +1,7 @@
 <template>
   <div class="products-content">
     <div class="products">
-      <Product v-if="!pending" v-for="(item, key) in products" :key="key" :item="item" />
+      <Product v-if="!loading" v-for="(item, key) in products" :key="key" :item="item" />
       <Placeholder v-else v-for="index in 8" :key="index"/>
     </div>
     <Pagination  :current-page="meta.currentPage" :totalPages="totalPages" @page-change="handlePageChange"/>
@@ -11,25 +11,29 @@
 <script setup lang="ts">
 import type { BaseResponseAPI } from '~/@types/type.api';
 
+const store = useProductsStore()
+const { meta, items, loading } = storeToRefs(store)
+
 const products = computed(() => {
   const startIndex = (meta.value.currentPage - 1) * meta.value.itemsPerPage;
   const endIndex = startIndex + meta.value.itemsPerPage;
-  return data.value?.products.slice(startIndex, endIndex);
+  return items.value?.products.slice(startIndex, endIndex) ?? [];
 })
 
 const totalPages = computed(() => {
-  const total  = data.value?.products.length ?? 0
-  console.error("💢 ~ totalPages ~ total:", total)
+  const total  = items.value?.products.length ?? 0
   return Math.ceil(total / meta.value.itemsPerPage);
 })
 
-const meta = ref({
-  currentPage: 1,
-  totalPages: 0,
-  itemsPerPage: 8,
-})
+if(!items.value) {
+  const { data, pending } = await useApi<BaseResponseAPI>('/products')
 
-const { data, status, pending } = await  useApi<BaseResponseAPI>('/products')
+  watch(pending, () => {
+    items.value = data.value
+    loading.value = pending.value
+  })
+}
+
 
 const handlePageChange = (pageNumber: number) =>{
   meta.value.currentPage = pageNumber;
