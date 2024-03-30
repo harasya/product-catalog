@@ -28,6 +28,7 @@ const totalPages = computed(() => {
 if(!items.value) {
   const { data, pending } = await useApi<BaseResponseAPI>('/products')
 
+  loading.value = pending.value
   watch(pending, () => {
     items.value = data.value
     loading.value = pending.value
