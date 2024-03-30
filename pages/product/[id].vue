@@ -4,7 +4,7 @@
       <Carousel id="gallery" :items-to-show="1" :wrap-around="false" v-model="currentSlide">
         <Slide v-for="(slide, key) in images" :key="key">
           <div class="carousel__item">
-            <img :src="slide" width="250"/>
+            <img :src="slide" />
           </div>
         </Slide>
       </Carousel>
@@ -72,6 +72,12 @@ watch(pending, () => {
     grid-column: span 2 / span 2;
     position: relative;
     width: 100%;
+
+    #gallery {
+      :deep() .carousel__item {
+        height: 28rem;
+      }
+    }
   }
   .product__detail {
     .product__detail-title {
